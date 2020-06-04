@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+
+DIR=$(mktemp -d)
+FILE="${DIR}/explo_styles.json"
+OUTPUT="lib/ex_css_helper/definitions.ex"
+
+curl https://bitbucket.org/!api/2.0/snippets/explo/EM6eA/HEAD/files/explo_styles.json -o "${FILE}"
+
+MAP=$(cat "${FILE}" | awk '{gsub(/{/, "%{"); gsub(/\":/, "\" =>"); print}')
+
+echo "Updating the defaults at ${OUTPUT}"
+cat <<EOF > lib/ex_css_helper/definitions.ex
+defmodule ExCssHelper.Definitions do
+  @moduledoc """
+  THIS MODULE IS AUTOMATICALLY GENERATED from "bin/fetch_styles". Modify it at your own risk, because it may be overwritten in the future.
+  """
+
+  def defaults() do
+    ${MAP}
+  end
+end
+EOF
