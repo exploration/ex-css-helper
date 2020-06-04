@@ -10,7 +10,7 @@ by adding `ex_css_helper` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:ex_css_helper, "~> 0.1.0"}
+    {:ex_css_helper, git: "https://bitbucket.org/explo/ex_css_helper.git"},
   ]
 end
 ```
